@@ -5,16 +5,16 @@ body {
 }
 
 #wrap {
-  width: 1000px;
+  width: 700px;
   margin: 0 auto;
 }
 
-h1 {
+h1, #action {
   font-size: 15px;
   font-family: ratio-1, ratio-2, 'Lucida Grande', 'Lucida Sans', 'Lucida Sans Unicode', Verdana, sans-serif;
   font-weight: normal;
   font-style: normal;
-  margin: 10px 10px 20px 10px;
+  margin: 10px 0 20px 0;
 }
 
 h1 b {
@@ -25,8 +25,7 @@ h1 b {
 #text {
   font-size: 16px;
   line-height: 1.5em;
-  margin: 0 300px 0 30px;
-  width: 600px;
+  margin: 0 40px;
 }
 
 #text a {
@@ -39,20 +38,17 @@ h1 b {
   border-radius: 2px;
 }
 
-
-
 #action {
-  margin: 20px 30px;
+  margin: 20px 0 40px 0;
 }
 
-#action input[type="button"] {
-  padding: 0 10px;
+#action span#sourcelang {
+  color: #090;
+  border-bottom: 1px dashed #090;
+  cursor: pointer;
 }
 
-#work {
-  border: 1px dashed #aaa;
-  min-height: 500px;
-  width: 320px;
+#action div#button {
   float: right;
-  margin: 0 20px;
+  
 }

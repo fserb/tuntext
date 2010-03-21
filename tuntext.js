@@ -1,7 +1,7 @@
 google.load("language", "1");
 google.load("jquery", "1.4.2");
 
-special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-\.\(\)\[\]\{\}\\\/?\!]
+special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-\.\(\)\[\]\{\}\\\/?\!]+)/);
 
 wordClick = function(ev) {
 	if (ev.button != 0) {
@@ -10,7 +10,7 @@ wordClick = function(ev) {
 	ev.preventDefault();
 	var s = $(ev.target).text();
 	google.language.translate(s, "de", "en", function(res) {
-		$(work).html(res.translation);
+		$("#work").html(res.translation);
 	});
 }
 
@@ -38,7 +38,6 @@ makeBlocks = function(target) {
 			d.click(wordClick);
 			target.append(d);
 		}
-
 	}
 };
 
