@@ -4,8 +4,11 @@ google.load("jquery", "1.4.2");
 var special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
 
 var langs = {
-	"de" : [ "German", "http://dict.cc?s=" ]
+	"de" : [ "German", "http://dict.cc?s=" ],
+	"pt" : [ "Portuguese", "" ],
 }
+
+var curlang = "";
 
 
 makePopup = function(text, x, y) {
@@ -26,7 +29,7 @@ wordClick = function(ev) {
 	var o = $(ev.target);
 	var pos = o.position();
 	var s = o.text();
-	google.language.translate(s, "de", "en", function(res) {
+	google.language.translate(s, curlang, "en", function(res) {
 		makePopup(res.translation,
 							pos.top,
 							pos.left + o.innerWidth()/2);
@@ -35,13 +38,13 @@ wordClick = function(ev) {
 
 makeBlocks = function(target) {
 	var text = target.text();
-	google.language.detect(text, function(res) {
+	google.language.detect(text.substr(0, 128), function(res) {
 		var l = langs[res.language];
 		if (!l) {
-			langs = [ [ res.language, "" ] ];
+			l = [ res.language, "" ];
 		}
+		curlang = res.language;
 		$("#sourcelang").text(l[0]);
-
 		var split = text.split(special);
 		target.empty();
 		for(var i = 0; i < split.length; ++i) {
@@ -62,6 +65,8 @@ makeBlocks = function(target) {
 				var d = $("<a>" + s + "</a>");
 				if (l[1]) {
 					d.attr("href", l[1] + s);
+				} else {
+					d.attr("href", "");
 				}
 				d.click(wordClick);
 				target.append(d);
@@ -77,7 +82,7 @@ run = function() {
 };
 
 flip = function() {
-	$("#text").text($("#input").text());
+	$("#text").text($("#input").val());
 	$("#pick").hide();
 	$("#action").show();
 	$("#text").show();
@@ -89,6 +94,5 @@ newpick = function() {
 	$("#text").hide();
 	$("#pick").show();
 };
-
 
 google.setOnLoadCallback(run);
