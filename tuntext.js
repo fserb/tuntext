@@ -3,14 +3,28 @@ google.load("jquery", "1.4.2");
 
 special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-\.\(\)\[\]\{\}\\\/?\!]+)/);
 
+makePopup = function(text, x, y) {
+	$("#pop span").text(text);
+	var pop = $("#pop");
+	pop.css("top", x - pop.innerHeight() - 10 + "px");
+	pop.css("left", y - pop.innerWidth()/2 +"px");
+	pop.show();
+	var w = pop.innerWidth();
+	$("#pop .popab, #pop .popa").css("left", w/2 - 6);
+}
+
 wordClick = function(ev) {
 	if (ev.button != 0) {
 		return;
 	}
 	ev.preventDefault();
-	var s = $(ev.target).text();
+	var o = $(ev.target);
+	var pos = o.position();
+	var s = o.text();
 	google.language.translate(s, "de", "en", function(res) {
-		$("#work").html(res.translation);
+		makePopup(res.translation,
+							pos.top,
+							pos.left + o.innerWidth()/2);
 	});
 }
 
@@ -43,6 +57,7 @@ makeBlocks = function(target) {
 
 
 function run() {
+	makePopup("hello this is a much bigger", 200, 300);
 	makeBlocks($("#text"));
 };
 
