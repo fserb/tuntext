@@ -1,7 +1,12 @@
 google.load("language", "1");
 google.load("jquery", "1.4.2");
 
-special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-\.\(\)\[\]\{\}\\\/?\!]+)/);
+var special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
+
+var langs = {
+	"de" : [ "German", "http://dict.cc?s=" ]
+}
+
 
 makePopup = function(text, x, y) {
 	$("#pop span").text(text);
@@ -30,35 +35,60 @@ wordClick = function(ev) {
 
 makeBlocks = function(target) {
 	var text = target.text();
-	var split = text.split(special);
-	target.empty();
-	for(var i = 0; i < split.length; ++i) {
-		var s = split[i];
-		if (s.length == 0) {
-			continue;
+	google.language.detect(text, function(res) {
+		var l = langs[res.language];
+		if (!l) {
+			langs = [ [ res.language, "" ] ];
 		}
-		if (s.match(special)) {
-			var enter = s.split(/(\n)/);
-			for (var j = 0; j < enter.length; ++j) {
-				if (enter[j] == "\n") {
-					target.append("<p>");
-				} else {
-					target.append(enter[j]);
-				}
+		$("#sourcelang").text(l[0]);
+
+		var split = text.split(special);
+		target.empty();
+		for(var i = 0; i < split.length; ++i) {
+			var s = split[i];
+			if (s.length == 0) {
+				continue;
 			}
-		} else {
-			var d = $("<a>" + s + "</a>");
-			d.attr("href", "http://dict.cc?s=" + s);
-			d.click(wordClick);
-			target.append(d);
+			if (s.match(special)) {
+				var enter = s.split(/(\n)/);
+				for (var j = 0; j < enter.length; ++j) {
+					if (enter[j] == "\n") {
+						target.append("<p>");
+					} else {
+						target.append(enter[j]);
+					}
+				}
+			} else {
+				var d = $("<a>" + s + "</a>");
+				if (l[1]) {
+					d.attr("href", l[1] + s);
+				}
+				d.click(wordClick);
+				target.append(d);
+			}
 		}
-	}
+	});
+};
+	
+run = function() {
+	$("body").click(function() {
+		$("#pop").hide();
+	});
 };
 
-
-function run() {
-	makePopup("hello this is a much bigger", 200, 300);
+flip = function() {
+	$("#text").text($("#input").text());
+	$("#pick").hide();
+	$("#action").show();
+	$("#text").show();
 	makeBlocks($("#text"));
 };
+
+newpick = function() {
+	$("#action").hide();
+	$("#text").hide();
+	$("#pick").show();
+};
+
 
 google.setOnLoadCallback(run);
