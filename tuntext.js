@@ -1,5 +1,8 @@
-google.load("language", "1");
-google.load("jquery", "1.4.2");
+/*
+TODO:
+- language select box on the top right corner
+- reload original page on top right
+*/
 
 var special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
 
@@ -9,7 +12,6 @@ var langs = {
 }
 
 var curlang = "";
-
 
 makePopup = function(text, x, y) {
 	$("#pop span").text(text);
@@ -22,6 +24,7 @@ makePopup = function(text, x, y) {
 }
 
 wordClick = function(ev) {
+	console.log("click");
 	if (ev.button != 0) {
 		return;
 	}
@@ -74,25 +77,67 @@ makeBlocks = function(target) {
 		}
 	});
 };
-	
-run = function() {
-	$("body").click(function() {
-		$("#pop").hide();
+
+processText = function(node) {
+	var skip = 0;
+	var split = node.split(special);
+	for(var i = 0; i < split.length; ++i) {
+		var s = split[i];
+		if (s.length == 0) {
+			continue;
+		}
+		if (s.match(special)) {
+			var enter = s.split(/(\n)/);
+			for (var j = 0; j < enter.length; ++j) {
+				if (enter[j] == "\n") {
+					target.append("<p>");
+					skip += 1;
+				} else {
+					target.append(enter[j]);
+				}
+			}
+		} else {
+			console.log(s);
+			var d = $("<a>" + s + "</a>");
+			if (true) {
+				d.attr("href", "http://" + s);
+			} else {
+				d.attr("href", "");
+			}
+			d.click(wordClick);
+			target.append(d);
+			skip += 1;
+		}
+	}
+	return 0;
+};
+
+prepareElements = function(node) {
+	var skip = 0;
+  if (node.nodeType == 3) {
+		skip += processText(node);
+  }
+  else if (node.nodeType == 1 && 
+					 node.childNodes && 
+					 !/(script|style)/i.test(node.tagName)) {
+		for (var i = 0; i < node.childNodes.length; ++i) {
+			i += prepareElements(node.childNodes[i]);
+		}
+  }
+  return skip;
+};
+
+clearPage = function() {
+	$("a").removeAttr("href");
+	$("*").each(function() {
+		$(this).unbind("click");
 	});
 };
 
-flip = function() {
-	$("#text").text($("#input").val());
-	$("#pick").hide();
-	$("#action").show();
-	$("#text").show();
-	makeBlocks($("#text"));
+
+run = function() {
+	clearPage();
+	prepareElements($("body").get(0));
 };
 
-newpick = function() {
-	$("#action").hide();
-	$("#text").hide();
-	$("#pick").show();
-};
-
-google.setOnLoadCallback(run);
+run();
