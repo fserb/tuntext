@@ -2,7 +2,6 @@
 TODO:
 - language select box on the top right corner
 - black covers whole page
-- strip page content
 */
 
 var basepath = "http://localhost:8080/"
@@ -61,17 +60,36 @@ findChildIndex = function(x, y) {
 var draggingFrom = -1;
 
 wordUp = function(ev) {
-	if (draggingFrom == -1) return;
+	if (draggingFrom == -1) {
+		return;
+	}
 	var idx = findChildIndex(ev.pageX, ev.pageY);
-	console.log("up: " + draggingFrom + " - " + (idx+1));
+
+	if (idx == draggingFrom) {
+		draggingFrom = -1;
+		$("#tuntext_content a").removeClass("selected");
+		return;
+	}
+	var start = draggingFrom;
+	var end = idx;
+	if (idx < draggingFrom) {
+		start = idx;
+		end = draggingFrom;
+	}
+	draggingFrom = -1;
+	console.log("up: " + start + " - " + (end+1));
 	
 	var txt = "";
-	$("#tuntext_content a").slice(draggingFrom, idx+1).each(function() {
+	$("#tuntext_content a").slice(start, end+1).each(function() {
 		txt += $(this).text() + " ";
 	});
 	txt = $.trim(txt);
-	var first = $("#tuntext_content a").eq(draggingFrom);
-	var last = $("#tuntext_content a").eq(idx);
+	if (txt.length == 0) {
+		$("#tuntext_content a").removeClass("selected");
+		return;
+	}
+	var first = $("#tuntext_content a").eq(start);
+	var last = $("#tuntext_content a").eq(end);
 	var pos = first.position();
 	var width = Math.max(first.innerWidth(),
 											 last.position().left + last.innerWidth() - pos.left);
@@ -81,16 +99,21 @@ wordUp = function(ev) {
 							pos.top,
 							pos.left + width/2);
 	});
-	draggingFrom = -1;
 };
 
 wordMove = function(ev) {
 	if (draggingFrom == -1) return;
 	var idx = findChildIndex(ev.pageX, ev.pageY);
+	var start = draggingFrom;
+	var end = idx;
+	if (idx < draggingFrom) {
+		start = idx;
+		end = draggingFrom;
+	}
 
 	$("#tuntext_content a").removeClass("selected");
 	if (idx != -1) {
-		$("#tuntext_content a").slice(draggingFrom, idx+1).addClass("selected");
+		$("#tuntext_content a").slice(start, end+1).addClass("selected");
 	}
 
 
