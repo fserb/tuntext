@@ -1,72 +1,41 @@
-body {
-  background-color: #FFF;
-  font-family: verdana;
-  color: #000;
+#tuntext {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0.9);
 }
 
-#wrap {
+#tuntext_content {
+  padding: 40px;
+  margin: 60px auto;
   width: 700px;
-  margin: 0 auto;
+  min-height: 100px;
+  background-color: #FAFAFA;
+  border: 1px solid #CCC;
 }
 
-h1, #action, #pick {
-  font-size: 15px;
-  font-family: ratio-1, ratio-2, 'Lucida Grande', 'Lucida Sans', 'Lucida Sans Unicode', Verdana, sans-serif;
-  font-weight: normal;
-  font-style: normal;
-  margin: 10px 0 20px 0;
-}
-
-h1 b {
-  font-size: 24px;
-}
-
-
-#text {
-  font-size: 16px;
+#tuntext_content a {
   line-height: 1.5em;
-  margin: 0 40px;
-  display: none;
-}
-
-#text a {
+  font-family: verdana;
+  font-size: 16px;
   text-decoration: none;
   color: #000;
 }
 
-#text a:hover {
+#tuntext_content p {
+  height: auto;
+  min-height: 1.5em;
+}
+
+#tuntext_content a:hover,
+#tuntext_content a.selected {
   background-color: #E87979;
   border-radius: 2px;
 }
 
-#action {
-  margin: 20px 0 40px 0;
-  display: none;
-}
-
-#action span#sourcelang {
-  color: #090;
-  border-bottom: 1px dashed #090;
-  cursor: pointer;
-}
-
-#action div#button {
-  float: right;
-}
-
-#pick {
-
-}
-
-#pick textarea#input {
-  margin: 20px 40px;
-  width: 600px;
-  height: 400px;
-  background-color: #FAFAFA;
-  font-family: verdana;
-}
-
-#pop {
+#tuntext_pop {
   display: none;
 
   font-family: verdana;
@@ -84,7 +53,7 @@ h1 b {
   -webkit-box-shadow:0 0 5px #888888;
 }
 
-#pop .popab {
+#tuntext_pop .tuntext_popab {
   border-color: #666666 transparent transparent transparent;
   border-style: solid;
   border-width: 6px;
@@ -95,7 +64,7 @@ h1 b {
   left: 30px;
 }
 
-#pop .popa {
+#tuntext_pop .tuntext_popa {
   border-color: #EDEDED transparent transparent transparent;
   border-style: solid;
   border-width: 6px;
@@ -104,12 +73,4 @@ h1 b {
   position:absolute;
   bottom:-11px;
   left:30px;
-}
-
-.button {
-  background-color: #EEE;
-  padding: 2px 20px;
-  border-radius: 4px;
-  border: 1px solid #AAA;
-  cursor: pointer;
 }

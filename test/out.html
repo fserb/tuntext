@@ -9,6 +9,15 @@
 <LINK rel="stylesheet" href="http://inc1.lsistatic.com/lyricsbox_styles20100419.css" media="screen,projection" type="text/css">
 </HEAD>
 <BODY>
+<script>
+loadTuntext = function() {
+  var sc = document.createElement('script');
+  sc.src = "http://localhost:8080/loader.js";
+  sc.type = "text/javascript";
+  document.getElementsByTagName('body')[0].appendChild(sc);
+}
+</script>
+<div style="text-align:center"><a style="font-size:32px;" href="javascript:loadTuntext();">tuntext</a></div>
 <DIV id=container>
 <DIV id=header>
 <DIV id=logo><A href="http://www.lyricsbox.com"><IMG src="http://cdn.lsistatic.com/lb/logo.png" alt="Lyrics Box" border=0 class=logo></A><BR>
@@ -112,6 +121,9 @@ Die Zeit heilt alle Wunder</PRE><DIV align="left"><a target=_blank style="color:
 <DIV id=copyright>Copyright © 2002-2010 LyricsBox</DIV>
 </DIV>
 <DIV id=borderbottom>&nbsp;</DIV>
-<script src="../loader.js"></script>
+<script>
+loadTuntext();
+</script>
+
 </BODY>
 </HTML>
