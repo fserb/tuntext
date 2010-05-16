@@ -4,7 +4,8 @@ TODO:
 - black covers whole page
 */
 
-var basepath = "http://localhost:8080/"
+var basepath = "http://fserb.com.br/tuntext/"
+basepath = "http://localhost:8080/"
 
 var special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
 
@@ -217,9 +218,8 @@ Tuntext = function(text) {
 RunSelection = function() {
 	var text = window.getSelection().toString();
 	if (!text) {
-		//alert("No text selected");
-		//return;
-		text = "Teheran (nhz) ~ Ein Kleriker aus der schönen Stadt Teheran, welche des öfteren unter Erdbeben zu leiden hat, behauptete doch, dass öffentlich zur Schau getragene Busen dafür verantwortlich seien.\nAufgeschreckt gaben wir unseren Seismologen sofort den Auftrag diesen, nicht von der Hand zu weisenden Zusammenhang, wissenschaftlich zu untersuchen. In Australien und Kanada wurden Trägerinnen eines Busens aufgefordert diesen zu zeigen. Die Nadeln der Seismologen schlugen aber keinen Millimeter aus. Auch die Redakteure der NHZ, welche ihre Gattinnen oder Lebensgefährtinnen baten bei der Wahrheitsfindung zu helfen, konnten keine Erbeben feststellen.\nMit ganz viel Vertrauen in unsere Untersuchungen können wir allen Frauen mitteilen\n\nBusen haben vielleicht auf die Erdbeerernte Einfluss,\naber garantiert nicht auf Erdbeben!";
+		alert("No text selected");
+		return;
 	} 
 
 	Tuntext(text);
