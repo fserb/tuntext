@@ -2,7 +2,6 @@
 TODO:
 - language select box on the top right corner (from and to)
 - black covers whole page
-- turn back scrolling when disabled (google reader)
 - add more language links
 - create proper main page with link to bookmarklet and text field
 - add "tuntext" somewhere on the final page
