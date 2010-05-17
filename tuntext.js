@@ -177,6 +177,9 @@ Prepare = function() {
 		$("#tuntext").show();
 		return;
 	}
+	
+	// force all flash to go below.
+	$("embed").attr("wmode", "transparent");
 
 	var main = $("<div id='tuntext'></div>");
 	main.click(function() {
