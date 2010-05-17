@@ -6,7 +6,50 @@
   top: 0;
   left: 0;
   z-index: 16000;
-  background-color: rgba(0,0,0,0.9);
+  background-color: rgba(0,0,0,0.95);
+}
+
+#tuntext_bar {
+  margin: 6px 0;
+  text-align: center;
+}
+
+#tuntext_bar h1,
+#tuntext_bar .gBrandingText {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-family: ratio-1, ratio-2, 'Lucida Grande', 'Lucida Sans', 'Lucida Sans Unicode', Verdana, sans-serif; 
+  color: #CCC;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+#tuntext_bar .gBrandingText {
+  color: #777;
+}
+
+#tuntext_bar .gBranding {
+  display: inline;
+  margin-left: 5px;
+}
+
+#tuntext_bar h1 a {
+  text-decoration: none;
+  font-size: 18px;
+  font-family: ratio-1, ratio-2, 'Lucida Grande', 'Lucida Sans', 'Lucida Sans Unicode', Verdana, sans-serif;
+  line-height: 20px;
+  font-weight: normal;
+  color: #FFF;
+}
+
+#tuntext_bar_lang {
+  color: #DDD;
+}
+
+#tuntext_bar_lang select {
+  border-radius: 5px;
 }
 
 #tuntext_content {
@@ -16,6 +59,7 @@
   min-height: 100px;
   background-color: #FAFAFA;
   border: 1px solid #CCC;
+  border-radius: 5px;
 }
 
 #tuntext_content a {

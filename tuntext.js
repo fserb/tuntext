@@ -1,19 +1,82 @@
 /*
 TODO:
-- language select box on the top right corner (from and to)
 - add more language links
+- loader
 - create proper main page with link to bookmarklet and text field
-- add "tuntext" somewhere on the final page
+- make everything work on Firefox
 */
 
-var special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
+var TT_FROMLANG;
+var TT_TOLANG;
+var TT_ORIGINAL_TEXT;
 
-var langs = {
-	"de" : [ "German", "http://dict.cc?s=" ],
-	"pt" : [ "Portuguese", "" ],
+var TT_SPECIAL = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
+
+var TT_LANGS = {
+	"af": [ "Afrikaans", "" ],
+	"sq": [ "Albanian", "" ],
+	"ar": [ "Arabic", "" ],
+	"be": [ "Belarusian", "" ],
+	"bg": [ "Bulgarian", "" ],
+	"zh": [ "Chinese", "" ],
+	"zh-CN": [ "Chinese (simp)", "" ],
+	"zh-TW": [ "Chinese (trad)", "" ],
+	"hr": [ "Croatian", "" ],
+	"cs": [ "Czech", "" ],
+	"da": [ "Danish", "" ],
+	"nl": [ "Dutch", "" ],
+	"en": [ "English", "" ],
+	"et": [ "Estonian", "" ],
+	"tl": [ "Filipino", "" ],
+	"fi": [ "Finnish", "" ],
+	"fr": [ "French", "" ],
+	"gl": [ "Galician", "" ],
+	"de": [ "German", "http://dict.cc?s=" ],
+	"el": [ "Greek", "" ],
+	"iw": [ "Hebrew", "" ],
+	"hi": [ "Hindi", "" ],
+	"hu": [ "Hungarian", "" ],
+	"is": [ "Icelandic", "" ],
+	"id": [ "Indonesian", "" ],
+	"ga": [ "Irish", "" ],
+	"it": [ "Italian", "" ],
+	"ja": [ "Japanese", "" ],
+	"ko": [ "Korean", "" ],
+	"lv": [ "Latvian", "" ],
+	"lt": [ "Lithuanian", "" ],
+	"mk": [ "Macedonian", "" ],
+	"ms": [ "Malay", "" ],
+	"ml": [ "Malayalam", "" ],
+	"mt": [ "Maltese", "" ],
+	"no": [ "Norwegian", "" ],
+	"fa": [ "Persian", "" ],
+	"pl": [ "Polish", "" ],
+	"pt": [ "Portuguese", "" ],
+	"ro": [ "Romanian", "" ],
+	"ru": [ "Russian", "" ],
+	"sr": [ "Serbian", "" ],
+	"sk": [ "Slovak", "" ],
+	"sl": [ "Slovenian", "" ],
+	"es": [ "Spanish", "" ],
+	"sw": [ "Swahili", "" ],
+	"sv": [ "Swedish", "" ],
+	"th": [ "Thai", "" ],
+	"tr": [ "Turkish", "" ],
+	"uk": [ "Ukrainian", "" ],
+	"vi": [ "Vietnamese", "" ],
+	"cy": [ "Welsh", "" ],
+	"yi": [ "Yiddish", "" ],
 }
 
-var curlang = "";
+makeLanguageSelect = function(obj) {
+	obj.append($("<option></option"));
+	for (l in TT_LANGS) {
+		var o = $("<option></option>");
+		o.attr("value", l);
+		o.text(TT_LANGS[l][0]);
+		obj.append(o);
+	}
+}
 
 makePopup = function(text, x, y) {
 	$("#tuntext_pop span").text(text);
@@ -27,7 +90,7 @@ makePopup = function(text, x, y) {
 }
 
 wordClick = function(ev) {
-	console.log("click");
+	console.log("click " + TT_FROMLANG + " -> " + TT_TOLANG);
 	ev.stopPropagation();
 	if (ev.button != 0) {
 		return;
@@ -36,7 +99,7 @@ wordClick = function(ev) {
 	var o = $(ev.target);
 	var pos = o.position();
 	var s = o.text();
-	google.language.translate(s, curlang, "en", function(res) {
+	google.language.translate(s, TT_FROMLANG, TT_TOLANG, function(res) {
 		makePopup(res.translation,
 							pos.top,
 							pos.left + o.innerWidth()/2);
@@ -93,7 +156,7 @@ wordUp = function(ev) {
 	var pos = first.position();
 	var width = Math.max(first.innerWidth(),
 											 last.position().left + last.innerWidth() - pos.left);
-	google.language.translate(txt, curlang, "en", function(res) {
+	google.language.translate(txt, TT_FROMLANG, TT_TOLANG, function(res) {
 		$("#tuntext_content a").removeClass("selected");
 		makePopup(res.translation,
 							pos.top,
@@ -128,46 +191,76 @@ wordDown = function(ev) {
 };
 
 LoadText = function(text) {
+	TT_ORIGINAL_TEXT = text;
+	var l = TT_LANGS[TT_FROMLANG];
+	var link;
+	if (l) {
+		link = l[1];
+	} else {
+		link = "";
+	}
 	text = $.trim(text);
-	google.language.detect(text.substr(0, 128), function(res) {
-		var target = $("#tuntext_content");
-		var l = langs[res.language];
-		if (!l) {
-			l = [ res.language, "" ];
+	var target = $("#tuntext_content");
+	var split = text.split(TT_SPECIAL);
+	target.empty();
+	for(var i = 0; i < split.length; ++i) {
+		var s = split[i];
+		if (s.length == 0) {
+			continue;
 		}
-		curlang = res.language;
-		//$("#sourcelang").text(l[0]);
-		var split = text.split(special);
-		target.empty();
-		for(var i = 0; i < split.length; ++i) {
-			var s = split[i];
-			if (s.length == 0) {
-				continue;
-			}
-			if (s.match(special)) {
-				var enter = s.split(/(\n)/);
-				for (var j = 0; j < enter.length; ++j) {
-					if (enter[j] == "\n") {
-
-						target.append("<p>");
-					} else {
-						target.append(enter[j]);
-					}
-				}
-			} else {
-				var d = $("<a>" + s + "</a>");
-				if (l[1]) {
-					d.attr("href", l[1] + s);
+		if (s.match(TT_SPECIAL)) {
+			var enter = s.split(/(\n)/);
+			for (var j = 0; j < enter.length; ++j) {
+				if (enter[j] == "\n") {
+					
+					target.append("<p>");
 				} else {
-					d.attr("href", "");
+					target.append(enter[j]);
 				}
-				d.click(wordClick);
-				target.append(d);
 			}
+		} else {
+			var d = $("<a>" + s + "</a>");
+			if (link) {
+				d.attr("href", link + s);
+			} else {
+				d.attr("href",
+							 "http://www.google.com/images?hl=" + TT_FROMLANG + "&q=" + s);
+			}
+			d.click(wordClick);
+			target.append(d);
 		}
-		target.show();
-	});
+	}
+	target.show();
+}
+
+LoadTextLanguage = function(text) {
+	text = $.trim(text);
+	if (TT_FROMLANG) {
+		LoadText(text);
+	} else {
+		google.language.detect(text.substr(0, 128), function(res) {
+			TT_FROMLANG = res.language;
+			$("#tuntext_fromlang").val(res.language);
+			LoadText(text);
+		});
+	}
 };
+
+HoldEvent = function(ev) {
+	ev.stopPropagation();
+	$("#tuntext_pop").hide();
+}
+
+ChangeFromLanguage = function(ev) {
+	$("#tuntext_pop").hide();
+	TT_FROMLANG = $("#tuntext_fromlang").val();
+	LoadText(TT_ORIGINAL_TEXT);
+}
+
+ChangeToLanguage = function(ev) {
+	$("#tuntext_pop").hide();
+	TT_TOLANG = $("#tuntext_tolang").val();
+}
 
 Prepare = function() {
 	var old_scroll_position = $(window).scrollTop();
@@ -199,36 +292,57 @@ Prepare = function() {
 	});
 	$("body").append(main);
 
+  var bar = $("<div id='tuntext_bar'><h1>" +
+              "<a href='http://fserb.com.br/tuntext'>TunText</a> " +
+              "by Fernando Serboncini</h1></div>");
+	var bar_lang = $("<div id='tuntext_bar_lang'></div>");
+
+	var from_lang = $("<select id='tuntext_fromlang'></select>");
+	from_lang.click(HoldEvent);
+	from_lang.change(ChangeFromLanguage);
+	makeLanguageSelect(from_lang);
+	var to_lang = $("<select id='tuntext_tolang'></select>");
+	to_lang.click(HoldEvent);
+	to_lang.change(ChangeToLanguage);
+	makeLanguageSelect(to_lang);
+	to_lang.val("en");
+	TT_TOLANG = "en";
+	bar_lang.append("from ");
+	bar_lang.append(from_lang);
+	bar_lang.append(" to ");
+	bar_lang.append(to_lang);
+
+	bar.append(bar_lang);	
+	main.append(bar);
+
 	var content = $("<div id='tuntext_content'></div>");
 	content.hide();
 	content.mousedown(wordDown);
 	content.mouseup(wordUp);
 	content.mousemove(wordMove);
-	content.click(function(ev) {
-		ev.stopPropagation();
-		$("#tuntext_pop").hide();
-	});
+	content.click(HoldEvent);
 	main.append(content);
 
 	var pop = $("<div id='tuntext_pop'><span></span>" +
 							"<div class='tuntext_popab'></div>" +
 							"<div class='tuntext_popa'></div></div>");
-	pop.click(function(ev) {
-		ev.stopPropagation();
-		$("#tuntext_pop").hide();
-	});
+	pop.click(HoldEvent);
 	main.append(pop);
+	console.log(bar.find('h1').get());
+	google.language.getBranding(bar.find('h1').get(0));
 }
 
 Tuntext = function(text) {
 	Prepare();
-	LoadText(text);
+	LoadTextLanguage(text);
 };
 
 RunSelection = function() {
 	var text = window.getSelection().toString();
 	if (text) {
 		Tuntext(text);
+	} else {
+		Tuntext("von bhuddistischen mönchen");
 	}
 };
 

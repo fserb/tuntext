@@ -60,13 +60,9 @@
 <body>
 <script>
 loadTuntext = function() {
-  var sc = document.createElement('script');
-  sc.src = "http://localhost:8080/loader.js";
-  sc.type = "text/javascript";
-  document.getElementsByTagName('body')[0].appendChild(sc);
+if (!window['apiLoaded']) {window.apiLoaded = function() {google.load('language', '1', { 'callback' : function() {$(document).ready(function() {var sc = document.createElement('script');sc.src = 'http://localhost:8080/tuntext.js?t='+Date()+'';sc.type = 'text/javascript';document.getElementsByTagName('head')[0].appendChild(sc);sc = document.createElement('link');sc.rel = 'stylesheet';sc.type = 'text/css';sc.href = 'http://localhost:8080/tuntext.css?t='+Date()+'';document.getElementsByTagName('head')[0].appendChild(sc);})}});};}if (!window['loadGoogle']) {loadGoogle = function() {if (!window['google']) {var s = document.createElement('script');s.src = 'http://www.google.com/jsapi?callback=apiLoaded';s.type = 'text/javascript';document.getElementsByTagName('head')[0].appendChild(s);} else {apiLoaded();}};}if (!window['jQuery']) {var sc = document.createElement('script');sc.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js';sc.type = 'text/javascript';sc.onload = loadGoogle;document.getElementsByTagName('head')[0].appendChild(sc);} else {loadGoogle();}
 }
 </script>
-<div style="text-align:center"><a style="font-size:32px;" href="javascript:loadTuntext();">tuntext</a></div>
 <div id="page">
 <!-- E-Mail Notification -->
 <!-- E-Mail Notification -->
@@ -642,17 +638,7 @@ Sonnenuntergang: 20:03<br />
 						</ul>
 		</li> 
                 </ul>
-                <!-- MINI-BANNER -->
-                <a href="http://www.gnilhe.de/" target="_blank" title="gnilhe Blogverzeichnis"><img border="0" src="http://www.gnilhe.de/grafiken/blogverzeichnis_80_15.gif" alt="Blogverzeichnis"></a>
-				<a href="http://www.blogcatalog.com/directory/entertainment/humor/satirical-news" title="Humorous Satirical News Blogs - BlogCatalog Blog Directory"><img src="http://www.blogcatalog.com/images/buttons/blogcatalog5.gif" alt="Humorous Satirical News Blogs - BlogCatalog Blog Directory" style="border: 0;" /></a>
-                <!-- Blog Top Liste - by TopBlogs.de --> <a href="http://www.topblogs.de/"><img border="0" src="http://www.topblogs.de/tracker.php?do=in&amp;id=8797" alt="Blog Top Liste - by TopBlogs.de" /></a><!-- /Blog Top Liste - by TopBlogs.de -->
-				<a href="http://www.bloggerei.de/rubrik_4_Kulturblogs" title="Blog-Verzeichnis"><img src="http://www.bloggerei.de/bgpublicon.jpg" width="80" height="15" border="0" alt="Blogverzeichnis - Blog Verzeichnis bloggerei.de" /></a>
-				<a href="http://www.blogparade.ch/"><img src="http://www.blogparade.ch/button.php?u=Eduard" alt="Blogparade" border="0" /></a>
-				<a href="http://blogpingr.de" title="BlogPingR.de: Blog Ping-Dienst, Blogmonitor"><img src="http://blogpingr.de/track/blogtrack/buttons/1/" alt="BlogPingR.de - Blog Ping-Dienst, Blogmonitor" width="80" height="15" border="0" /></a>
-				<script type="text/javascript" src="http://www.blogtraffic.de/track/trackit.php?uid=14167"></script>
-				<noscript><a href="http://www.blogtraffic.de"><img src="http://www.blogtraffic.de/track/track.php?uid=14167" border="0" alt="Blogtraffic" /></a> </noscript>
-				<a href="http://click.listinus.de/71927/" target="_blank"><img src="http://icon.listinus.de/71927/" alt="Listinus Toplisten" style="margin-top: 5px; border: none;"></a>
-                <!-- ENDE MINI-BANNER -->
+
                 <!-- Flaglist -->
                 <!-- Ende Flaglist -->
         </div>
