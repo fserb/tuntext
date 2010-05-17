@@ -1,7 +1,8 @@
 // we first load jquery, then google API then language API then our script.
 
-if (!window['apiLoaded']) {
-  window.apiLoaded = function() {
+(function() {
+if (!window['TuntextAPILoaded']) {
+  window.TuntextAPILoaded = function() {
     google.load('language', '1', { 'callback' : function() {
 			$(document).ready(function() {  
 				var sc = document.createElement('script');
@@ -21,11 +22,11 @@ if (!window['loadGoogle']) {
 	loadGoogle = function() {
 		if (!window['google']) {
 			var s = document.createElement('script');
-			s.src = 'http://www.google.com/jsapi?callback=apiLoaded';
+			s.src = 'http://www.google.com/jsapi?callback=TuntextAPILoaded';
 			s.type = 'text/javascript';
 			document.getElementsByTagName('head')[0].appendChild(s);
 		} else {
-			apiLoaded();
+			TuntextAPILoaded();
 		}
 	};
 }
@@ -41,3 +42,4 @@ if (!window['jQuery']) {
 	loadGoogle();
 }
 
+})();

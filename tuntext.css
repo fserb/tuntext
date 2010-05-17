@@ -46,6 +46,7 @@
 
 #tuntext_bar_lang {
   color: #DDD;
+  text-align: center;
 }
 
 #tuntext_bar_lang select {

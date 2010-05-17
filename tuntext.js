@@ -79,7 +79,7 @@ makeLanguageSelect = function(obj) {
 }
 
 makePopup = function(text, x, y) {
-	$("#tuntext_pop span").text(text);
+	$("#tuntext_pop span").html(unescape(text));
 	var pop = $("#tuntext_pop");
 	pop.css("top", x - pop.innerHeight() - 10 + "px");
 	pop.css("left", y - pop.innerWidth()/2 +"px");
@@ -338,8 +338,6 @@ RunSelection = function() {
 	var text = window.getSelection().toString();
 	if (text) {
 		Tuntext(text);
-	} else {
-		Tuntext("von bhuddistischen mönchen");
 	}
 };
 
