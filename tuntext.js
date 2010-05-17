@@ -1,9 +1,7 @@
 /*
 TODO:
-- add more language links
 - loader
 - create proper main page with link to bookmarklet and text field
-- make everything work on Firefox
 */
 
 var TT_FROMLANG;
