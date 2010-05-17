@@ -1,0 +1,43 @@
+#!/usr/bin/python
+
+import re
+import sys
+import urllib
+
+def makebml(text):
+  for a, b in [ ('\r', ''),
+                ('^\s*//.*$', ''),
+                ('\t', ' '),
+                ('[ ]{2,}', ' '),
+                ('^\s+', ''),
+                ('\s+$', ''),
+                ('\n', '') ]:
+    exp = re.compile(a, re.M)
+    text = exp.sub(b, text)
+  quoted = urllib.quote(text.strip(), '/!,$ \"\'+[](){};:=')
+  return u'javascript:' + quoted.encode('utf-8') + '\n'
+
+def main(args):
+  orig = file("loader.js").read().decode('utf-8')
+  bml_tuntext = makebml(orig.replace('BASEPATH',
+                                     'http://fserb.com.br/tuntext'))
+  bml_debug = makebml(orig.replace('BASEPATH',
+                                   'http://localhost:8080'))
+
+  f = file('bookmarklet.js', 'wt')
+  f.write(bml_tuntext)
+  f.close()
+
+  f = file('bookmarklet-debug.js', 'wt')
+  f.write(bml_debug)
+  f.close()
+
+  f = file('load.html', 'wt')
+  f.write('<html><head></head><body>\n<a href="%s">tuntext</a><br>\n'
+          '<a href="%s">tuntext debug</a>\n</body></html>' % (bml_tuntext,
+                                                              bml_debug))
+  f.close()
+
+
+if __name__ == '__main__':
+  sys.exit(main(sys.argv))

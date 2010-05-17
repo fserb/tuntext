@@ -1,11 +1,12 @@
 /*
 TODO:
-- language select box on the top right corner
+- language select box on the top right corner (from and to)
 - black covers whole page
+- turn back scrolling when disabled (google reader)
+- add more language links
+- create proper main page with link to bookmarklet and text field
+- add "tuntext" somewhere on the final page
 */
-
-var basepath = "http://fserb.com.br/tuntext/"
-basepath = "http://localhost:8080/"
 
 var special = new RegExp(/([ \f\n\r\t\v\u00A0\u2028\u2029,:;\-~\.\(\)\[\]\{\}\\\/?\!]+)/);
 
@@ -177,12 +178,6 @@ Prepare = function() {
 		return;
 	}
 
-	var style = $("<link>");
-	style.attr("rel", "stylesheet");
-	style.attr("type", "text/css");
-	style.attr("href", basepath + "tuntext.css");
-	$("body").append(style);
-
 	var main = $("<div id='tuntext'></div>");
 	main.click(function() {
 		$(this).hide();
@@ -217,13 +212,9 @@ Tuntext = function(text) {
 
 RunSelection = function() {
 	var text = window.getSelection().toString();
-	if (!text) {
-		alert("No text selected");
-		return;
-	} 
-
-	Tuntext(text);
-
+	if (text) {
+		Tuntext(text);
+	}
 };
 
 RunSelection();
