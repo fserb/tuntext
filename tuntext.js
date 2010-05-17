@@ -1,7 +1,6 @@
 /*
 TODO:
 - language select box on the top right corner (from and to)
-- black covers whole page
 - add more language links
 - create proper main page with link to bookmarklet and text field
 - add "tuntext" somewhere on the final page
@@ -171,11 +170,15 @@ LoadText = function(text) {
 };
 
 Prepare = function() {
+	var old_scroll_position = $(window).scrollTop();
 	if ($("#tuntext").length != 0) {
+		$(window).scrollTop(0);
+		$("html").css("overflow", "hidden");
 		$("#tuntext_pop").hide();
 		$("#tuntext").show();
 		return;
 	}
+	var old_html_overflow = $("html").css("overflow");
 	
 	// force all flash to go below.
 	$("embed").attr("wmode", "transparent");
@@ -183,9 +186,16 @@ Prepare = function() {
 										 .attr("name", "wmode")
 										 .attr("value", "transparent"));
 
+
+	// block scrolling on the main document
+	$(window).scrollTop(0);
+	$("html").css("overflow", "hidden");
+
 	var main = $("<div id='tuntext'></div>");
 	main.click(function() {
 		$(this).hide();
+		$(window).scrollTop(old_scroll_position);
+		$("html").css("overflow", old_html_overflow);
 	});
 	$("body").append(main);
 
