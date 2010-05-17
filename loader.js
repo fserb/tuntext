@@ -5,13 +5,13 @@ if (!window['apiLoaded']) {
     google.load('language', '1', { 'callback' : function() {
 			$(document).ready(function() {  
 				var sc = document.createElement('script');
-				sc.src = 'BASEPATH/tuntext.js';
+				sc.src = 'BML_BASEPATH/tuntext.jsBML_DEBUG';
 				sc.type = 'text/javascript';
 				document.getElementsByTagName('head')[0].appendChild(sc);
 				sc = document.createElement('link');
 				sc.rel = 'stylesheet';
 				sc.type = 'text/css';
-				sc.href = 'BASEPATH/tuntext.css';
+				sc.href = 'BML_BASEPATH/tuntext.cssBML_DEBUG';
 				document.getElementsByTagName('head')[0].appendChild(sc);
 			})}});
 	};

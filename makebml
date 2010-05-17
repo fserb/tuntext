@@ -19,10 +19,12 @@ def makebml(text):
 
 def main(args):
   orig = file("loader.js").read().decode('utf-8')
-  bml_tuntext = makebml(orig.replace('BASEPATH',
-                                     'http://fserb.com.br/tuntext'))
-  bml_debug = makebml(orig.replace('BASEPATH',
-                                   'http://localhost:8080'))
+  bml_tuntext = makebml(orig
+                        .replace('BML_BASEPATH', 'http://fserb.com.br/tuntext')
+                        .replace('BML_DEBUG', ''))
+  bml_debug = makebml(orig
+                      .replace('BML_BASEPATH', 'http://localhost:8080')
+                      .replace('BML_DEBUG', "?t='+Date()+'"))
 
   f = file('bookmarklet.js', 'wt')
   f.write(bml_tuntext)
