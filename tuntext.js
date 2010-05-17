@@ -90,7 +90,6 @@ makePopup = function(text, x, y) {
 }
 
 wordClick = function(ev) {
-	console.log("click " + TT_FROMLANG + " -> " + TT_TOLANG);
 	ev.stopPropagation();
 	if (ev.button != 0) {
 		return;
@@ -140,7 +139,6 @@ wordUp = function(ev) {
 		end = draggingFrom;
 	}
 	draggingFrom = -1;
-	console.log("up: " + start + " - " + (end+1));
 	
 	var txt = "";
 	$("#tuntext_content a").slice(start, end+1).each(function() {
@@ -328,7 +326,6 @@ Prepare = function() {
 							"<div class='tuntext_popa'></div></div>");
 	pop.click(HoldEvent);
 	main.append(pop);
-	console.log(bar.find('h1').get());
 	google.language.getBranding(bar.find('h1').get(0));
 }
 
