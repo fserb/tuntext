@@ -73,10 +73,11 @@ makeLanguageSelect = function(obj) {
 }
 
 makePopup = function(text, x, y) {
+	console.log("popup " + x + ", " + y);
 	$("#tuntext_pop span").html(unescape(text));
 	var pop = $("#tuntext_pop");
-	pop.css("top", x - pop.innerHeight() - 10 + "px");
-	pop.css("left", y - pop.innerWidth()/2 +"px");
+	pop.css("left", x - pop.innerWidth()/2 +"px");
+	pop.css("top", y - pop.innerHeight() - 10 + "px");
 	pop.show();
 	var w = pop.innerWidth();
 	$("#tuntext_pop .tuntext_popab, #tuntext_pop .tuntext_popa")
@@ -94,8 +95,8 @@ wordClick = function(ev) {
 	var s = o.text();
 	google.language.translate(s, TT_FROMLANG, TT_TOLANG, function(res) {
 		makePopup(res.translation,
-							pos.top,
-							pos.left + o.innerWidth()/2);
+							pos.left + o.innerWidth()/2,
+							pos.top + $("#tuntext").scrollTop());
 	});
 }
 
@@ -151,8 +152,8 @@ wordUp = function(ev) {
 	google.language.translate(txt, TT_FROMLANG, TT_TOLANG, function(res) {
 		$("#tuntext_content a").removeClass("selected");
 		makePopup(res.translation,
-							pos.top,
-							pos.left + width/2);
+							pos.left + width/2,
+							pos.top + $("#tuntext").scrollTop());
 	});
 };
 
