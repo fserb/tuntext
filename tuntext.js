@@ -1,8 +1,4 @@
-/*
-TODO:
-- loader
-- create proper main page with link to bookmarklet and text field
-*/
+// TunText - by Fernando Serboncini
 
 var TT_FROMLANG;
 var TT_TOLANG;
@@ -234,7 +230,7 @@ LoadTextLanguage = function(text) {
 	if (TT_FROMLANG) {
 		LoadText(text);
 	} else {
-		google.language.detect(text.substr(0, 128), function(res) {
+		google.language.detect(text.substr(0, 512), function(res) {
 			TT_FROMLANG = res.language;
 			$("#tuntext_fromlang").val(res.language);
 			LoadText(text);
@@ -339,4 +335,8 @@ RunSelection = function() {
 	}
 };
 
-RunSelection();
+if (window['FullTunTextLoader']) {
+	FullTunTextLoader();
+} else {
+	RunSelection();
+}

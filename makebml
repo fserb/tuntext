@@ -34,6 +34,12 @@ def main(args):
   f.write(bml_debug)
   f.close()
 
+  f = file('fullloader.js', 'wt')
+  f.write(orig
+          .replace('BML_BASEPATH', '.')
+          .replace('BML_DEBUG', ''))
+  f.close()
+
   f = file('load.html', 'wt')
   f.write('<html><head></head><body>\n<a href="%s">tuntext</a><br>\n'
           '<a href="%s">tuntext debug</a>\n</body></html>' % (bml_tuntext,
