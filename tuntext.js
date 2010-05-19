@@ -73,7 +73,6 @@ makeLanguageSelect = function(obj) {
 }
 
 makePopup = function(text, x, y) {
-	//console.log("popup " + x + ", " + y);
 	$("#tuntext_pop span").html(unescape(text));
 	var pop = $("#tuntext_pop");
 	pop.css("left", x - pop.innerWidth()/2 +"px");
@@ -101,39 +100,77 @@ wordClick = function(ev) {
 }
 
 findChildIndex = function(x, y) {
-	var found = -1;
-	$("#tuntext_content a").each(function(index) {
-		var pos = $(this).position();
-		if ( x > pos.left && 
-				 y > pos.top &&
-				 (x - pos.left) < $(this).width() &&
-				 (y - pos.top) < $(this).height()) {
-			found = index;
+	var objs = $("#tuntext_content a");
+
+	var low = 0, high = objs.length - 1;
+	var i, o, comp;
+	var pos;
+
+	while (low <= high) {
+		i = parseInt((low + high)/2, 10);
+		o = objs.eq(i);
+
+		pos = o.position();
+		pos.width = o.width();
+		pos.height = o.height();
+
+		if (y < pos.top) {
+			high = i - 1; continue;
+		} else if ((y - pos.top) > pos.height) {
+			low = i + 1; continue;
+		} else {
+			if (x < pos.left) {
+				high = i - 1; continue;
+			} else if ((x - pos.left) > pos.width) {
+				low = i + 1; continue;
+			} else {
+				return i;
+			}
 		}
-	});
-	return found;
+	}
+	return -1;
 }
 
 var draggingFrom = -1;
+var draggingTo = -1;
+
+clearDragging = function(reset) {
+	var from = draggingFrom;
+	if (from < 0) {
+		from = -from;
+	}
+	if (from == draggingTo) {
+		$("#tuntext_content a").removeClass("selected");
+	} else if (from < draggingTo) {
+		$("#tuntext_content a").slice(from, draggingTo+1)
+			.removeClass("selected");
+	} else {
+		$("#tuntext_content a").slice(draggingTo, from+1)
+			.removeClass("selected");
+	}
+	if (reset) {
+		draggingFrom = draggingTo = -1;
+	}
+}
 
 wordUp = function(ev) {
-	if (draggingFrom == -1) {
+	wordMove(ev);
+	if (draggingFrom < 0) {
 		return;
 	}
-	var idx = findChildIndex(ev.layerX, ev.layerY);
 
-	if (idx == draggingFrom) {
-		draggingFrom = -1;
-		$("#tuntext_content a").removeClass("selected");
+	if (draggingFrom == draggingTo) {
+		clearDragging(true);
 		return;
 	}
+
 	var start = draggingFrom;
-	var end = idx;
-	if (idx < draggingFrom) {
-		start = idx;
+	var end = draggingTo;
+	if (end < start) {
+		start = draggingTo;
 		end = draggingFrom;
 	}
-	draggingFrom = -1;
+	clearDragging(true);
 	
 	var txt = "";
 	$("#tuntext_content a").slice(start, end+1).each(function() {
@@ -141,16 +178,15 @@ wordUp = function(ev) {
 	});
 	txt = $.trim(txt);
 	if (txt.length == 0) {
-		$("#tuntext_content a").removeClass("selected");
 		return;
 	}
+
 	var first = $("#tuntext_content a").eq(start);
 	var last = $("#tuntext_content a").eq(end);
 	var pos = first.position();
 	var width = Math.max(first.innerWidth(),
 											 last.position().left + last.innerWidth() - pos.left);
 	google.language.translate(txt, TT_FROMLANG, TT_TOLANG, function(res) {
-		$("#tuntext_content a").removeClass("selected");
 		makePopup(res.translation,
 							pos.left + width/2,
 							pos.top + $("#tuntext").scrollTop());
@@ -158,29 +194,24 @@ wordUp = function(ev) {
 };
 
 wordMove = function(ev) {
-	if (draggingFrom == -1) return;
+	if (draggingFrom < 0) return;
 	var idx = findChildIndex(ev.layerX, ev.layerY);
 	var start = draggingFrom;
 	var end = idx;
-	if (idx < draggingFrom) {
+	if (end < start) {
 		start = idx;
 		end = draggingFrom;
 	}
-
-	$("#tuntext_content a").removeClass("selected");
 	if (idx != -1) {
+		clearDragging(false);
 		$("#tuntext_content a").slice(start, end+1).addClass("selected");
+		draggingTo = idx;
 	}
-
-
 };
 
 wordDown = function(ev) {
 	ev.preventDefault();
-	var idx = findChildIndex(ev.layerX, ev.layerY);
-	if (idx != -1) {
-		draggingFrom = idx;
-	}
+ 	draggingFrom = findChildIndex(ev.layerX, ev.layerY);
 };
 
 LoadText = function(text) {

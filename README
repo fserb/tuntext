@@ -3,8 +3,6 @@ TunText
 tuntext is a bookmarklet and a site that helps people read pages in a language they are still learning. It uses JQuery and the Google Translation API.
 
 TODO
-- make selection drag with binary search
-- make unselection with list
 - loader
 - automatic detect content (based on readability)
 - allow different default out language (cookie?)
