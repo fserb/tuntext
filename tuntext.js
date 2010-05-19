@@ -120,7 +120,7 @@ wordUp = function(ev) {
 	if (draggingFrom == -1) {
 		return;
 	}
-	var idx = findChildIndex(ev.pageX, ev.pageY);
+	var idx = findChildIndex(ev.layerX, ev.layerY);
 
 	if (idx == draggingFrom) {
 		draggingFrom = -1;
@@ -159,7 +159,7 @@ wordUp = function(ev) {
 
 wordMove = function(ev) {
 	if (draggingFrom == -1) return;
-	var idx = findChildIndex(ev.pageX, ev.pageY);
+	var idx = findChildIndex(ev.layerX, ev.layerY);
 	var start = draggingFrom;
 	var end = idx;
 	if (idx < draggingFrom) {
@@ -177,7 +177,7 @@ wordMove = function(ev) {
 
 wordDown = function(ev) {
 	ev.preventDefault();
-	var idx = findChildIndex(ev.pageX, ev.pageY);
+	var idx = findChildIndex(ev.layerX, ev.layerY);
 	if (idx != -1) {
 		draggingFrom = idx;
 	}
