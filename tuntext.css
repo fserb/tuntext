@@ -84,12 +84,13 @@
 
 #tuntext_pop {
   display: none;
-
+  
   font-family: verdana;
   font-size: 14px;
   position: absolute;
   text-align: center;
 
+  color: #000;
   background-color:#EEE;
   border:2px solid #666666;
   max-width: 500px;
