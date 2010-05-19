@@ -73,7 +73,7 @@ makeLanguageSelect = function(obj) {
 }
 
 makePopup = function(text, x, y) {
-	console.log("popup " + x + ", " + y);
+	//console.log("popup " + x + ", " + y);
 	$("#tuntext_pop span").html(unescape(text));
 	var pop = $("#tuntext_pop");
 	pop.css("left", x - pop.innerWidth()/2 +"px");
