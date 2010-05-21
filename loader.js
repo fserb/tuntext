@@ -4,7 +4,7 @@
 if (!window['TuntextAPILoaded']) {
   window.TuntextAPILoaded = function() {
     google.load('language', '1', { 'callback' : function() {
-			$(document).ready(function() {  
+			window.jQuery(document).ready(function() {  
 				var sc = document.createElement('script');
 				sc.src = 'BML_BASEPATH/tuntext.jsBML_DEBUG';
 				sc.type = 'text/javascript';

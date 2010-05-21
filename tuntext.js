@@ -1,5 +1,7 @@
 // TunText - by Fernando Serboncini
 
+var $ = jQuery;
+
 var TT_FROMLANG;
 var TT_TOLANG;
 var TT_ORIGINAL_TEXT;
@@ -100,6 +102,7 @@ wordClick = function(ev) {
 }
 
 findChildIndex = function(x, y) {
+	console.log("fci: " + x + ", " + y);
 	var objs = $("#tuntext_content a");
 
 	var low = 0, high = objs.length - 1;
@@ -113,6 +116,8 @@ findChildIndex = function(x, y) {
 		pos = o.position();
 		pos.width = o.width();
 		pos.height = o.height();
+
+		console.log("  obj: " + pos.left + ", " + pos.top + " - " + pos.width + " - " + pos.height);
 
 		if (y < pos.top) {
 			high = i - 1; continue;
@@ -195,7 +200,7 @@ wordUp = function(ev) {
 
 wordMove = function(ev) {
 	if (draggingFrom < 0) return;
-	var idx = findChildIndex(ev.layerX, ev.layerY);
+	var idx = findChildIndex(ev.layerX || ev.pageX, ev.layerY || ev.pageY);
 	var start = draggingFrom;
 	var end = idx;
 	if (end < start) {
@@ -211,7 +216,7 @@ wordMove = function(ev) {
 
 wordDown = function(ev) {
 	ev.preventDefault();
- 	draggingFrom = findChildIndex(ev.layerX, ev.layerY);
+ 	draggingFrom = findChildIndex(ev.layerX || ev.pageX, ev.layerY || ev.pageY);
 };
 
 LoadText = function(text) {

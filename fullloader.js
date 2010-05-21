@@ -4,7 +4,7 @@
 if (!window['TuntextAPILoaded']) {
   window.TuntextAPILoaded = function() {
     google.load('language', '1', { 'callback' : function() {
-			$(document).ready(function() {  
+			window.jQuery(document).ready(function() {  
 				var sc = document.createElement('script');
 				sc.src = './tuntext.js';
 				sc.type = 'text/javascript';
