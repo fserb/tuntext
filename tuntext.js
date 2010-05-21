@@ -102,7 +102,6 @@ wordClick = function(ev) {
 }
 
 findChildIndex = function(x, y) {
-	console.log("fci: " + x + ", " + y);
 	var objs = $("#tuntext_content a");
 
 	var low = 0, high = objs.length - 1;
@@ -116,8 +115,6 @@ findChildIndex = function(x, y) {
 		pos = o.position();
 		pos.width = o.width();
 		pos.height = o.height();
-
-		console.log("  obj: " + pos.left + ", " + pos.top + " - " + pos.width + " - " + pos.height);
 
 		if (y < pos.top) {
 			high = i - 1; continue;
