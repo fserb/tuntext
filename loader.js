@@ -20,7 +20,7 @@ if (!window['TuntextAPILoaded']) {
 	
 if (!window['loadGoogle']) {
 	loadGoogle = function() {
-		if (!window['google']) {
+		if (!window['google'] || !window['google']['load']) {
 			var s = document.createElement('script');
 			s.src = 'http://www.google.com/jsapi?callback=TuntextAPILoaded';
 			s.type = 'text/javascript';
