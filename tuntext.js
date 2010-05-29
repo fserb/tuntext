@@ -364,6 +364,9 @@ Tuntext = function(text) {
 
 RunSelection = function() {
 	var text = window.getSelection().toString();
+  if (!text) {
+		text = TT_ORIGINAL_TEXT;
+	}
 	if (text) {
 		Tuntext(text);
 	}
