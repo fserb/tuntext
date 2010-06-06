@@ -176,7 +176,7 @@ wordUp = function(ev) {
 	
 	var txt = "";
 	$("#tuntext_content a").slice(start, end+1).each(function() {
-		txt += $(this).text() + " ";
+		txt += $(this).attr("prespecial") + $(this).text() + " ";
 	});
 	txt = $.trim(txt);
 	if (txt.length == 0) {
@@ -228,6 +228,7 @@ LoadText = function(text) {
 	text = $.trim(text);
 	var target = $("#tuntext_content");
 	var split = text.split(TT_SPECIAL);
+	var special = "";
 	target.empty();
 	for(var i = 0; i < split.length; ++i) {
 		var s = split[i];
@@ -238,9 +239,9 @@ LoadText = function(text) {
 			var enter = s.split(/(\n)/);
 			for (var j = 0; j < enter.length; ++j) {
 				if (enter[j] == "\n") {
-					
 					target.append("<p>");
 				} else {
+					special += enter[j];
 					target.append(enter[j]);
 				}
 			}
@@ -252,6 +253,8 @@ LoadText = function(text) {
 				d.attr("href",
 							 "http://www.google.com/images?hl=" + TT_FROMLANG + "&q=" + s);
 			}
+			d.attr("prespecial", special);
+			special = "";
 			d.click(wordClick);
 			target.append(d);
 		}
